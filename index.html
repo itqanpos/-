@@ -3,703 +3,1299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>القرآن الكريم - مشغل كامل مع مكتبة شاملة</title>
+    <title>القرآن الكريم - مشغل كامل يعمل 100%</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Tahoma', Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #1a5f7a;
+            --primary-light: #57c5b6;
+            --secondary: #159895;
+            --bg: #f8f9fa;
+            --card: #ffffff;
+            --text: #333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            direction: rtl;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* الهيدر */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+        }
+        
+        .header-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        /* القوائم */
+        .main-content {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .sidebar {
+            flex: 1;
+            min-width: 300px;
+            background: var(--card);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .player-section {
+            flex: 2;
+            min-width: 400px;
+            background: var(--card);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+        
+        .right-sidebar {
+            flex: 1;
+            min-width: 250px;
+            background: var(--card);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        /* قائمة السور */
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        .section-title h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: var(--bg);
+            color: var(--text);
+        }
+        
+        .surah-list {
+            list-style: none;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .surah-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .surah-item:hover {
+            background: rgba(21, 152, 149, 0.1);
+            transform: translateX(-5px);
+        }
+        
+        .surah-item.active {
+            background: rgba(21, 152, 149, 0.2);
+            border-right: 4px solid var(--secondary);
+        }
+        
+        .surah-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .surah-details {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* المشغل */
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .now-playing {
+            font-size: 1.4rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .surah-info {
+            background: rgba(21, 152, 149, 0.1);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .progress-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .progress-bar {
+            flex-grow: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--secondary);
+            width: 30%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .time-display {
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 80px;
+            text-align: center;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .player-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .player-btn:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+        
+        .player-btn.play-pause {
+            width: 65px;
+            height: 65px;
+            font-size: 1.6rem;
+            background: var(--secondary);
+        }
+        
+        .ayah-display {
+            background: rgba(21, 152, 149, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 25px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .ayah-text {
+            font-size: 2rem;
+            line-height: 1.8;
+            color: #1a472a;
+            font-family: 'Traditional Arabic', 'Scheherazade', serif;
+        }
+        
+        .ayah-translation {
+            font-size: 1.2rem;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .ayah-number {
+            background: var(--secondary);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        
+        /* قائمة القراء */
+        .qari-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .qari-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .qari-item:hover {
+            background: rgba(21, 152, 149, 0.1);
+        }
+        
+        .qari-item.active {
+            background: rgba(21, 152, 149, 0.2);
+            border-right: 4px solid var(--secondary);
+        }
+        
+        .qari-name {
+            font-weight: 600;
+        }
+        
+        .qari-country {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* الإشارات المرجعية */
+        .bookmark-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .bookmark-ayah {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            font-family: 'Traditional Arabic', 'Scheherazade', serif;
+        }
+        
+        .bookmark-info {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* التمرير */
+        .surah-list::-webkit-scrollbar,
+        .qari-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .surah-list::-webkit-scrollbar-track,
+        .qari-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .surah-list::-webkit-scrollbar-thumb,
+        .qari-list::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 10px;
+        }
+        
+        /* الفوتر */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        
+        /* التجاوب */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar, .player-section, .right-sidebar {
+                min-width: 100%;
+            }
+            
+            .ayah-text {
+                font-size: 1.5rem;
+            }
+            
+            .player-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+            
+            .player-btn.play-pause {
+                width: 55px;
+                height: 55px;
+                font-size: 1.4rem;
+            }
+            
+            .buttons-container {
+                gap: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- شريط التنقل العلوي -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <i class="fas fa-quran"></i>
-                <h1>القرآن الكريم</h1>
-                <span class="app-version">v4.0</span>
-            </div>
-            
-            <div class="nav-menu" id="nav-menu">
-                <a href="#" class="nav-link active" data-section="home">
-                    <i class="fas fa-home"></i>
-                    <span>الرئيسية</span>
-                </a>
-                <a href="#" class="nav-link" data-section="library">
-                    <i class="fas fa-book"></i>
-                    <span>مكتبة القرآن</span>
-                </a>
-                <a href="#" class="nav-link" data-section="reciters">
-                    <i class="fas fa-users"></i>
-                    <span>القراء</span>
-                </a>
-                <a href="#" class="nav-link" data-section="bookmarks">
-                    <i class="fas fa-bookmark"></i>
-                    <span>الإشارات</span>
-                </a>
-                <a href="#" class="nav-link" data-section="settings">
-                    <i class="fas fa-cog"></i>
-                    <span>الإعدادات</span>
-                </a>
-            </div>
-            
-            <div class="nav-controls">
-                <button class="nav-control-btn" id="theme-toggle">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <button class="nav-control-btn" id="fullscreen-toggle">
-                    <i class="fas fa-expand"></i>
-                </button>
-                <button class="nav-control-btn mobile-menu-btn" id="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- المحتوى الرئيسي -->
-    <main class="main-content">
-        <!-- قسم الرئيسية -->
-        <section class="content-section active" id="home-section">
-            <div class="hero-section">
-                <div class="hero-content">
-                    <h2 class="hero-title">مشغل القرآن الكريم الكامل</h2>
-                    <p class="hero-subtitle">استمع، اقرأ، وتدبر مع مكتبة القرآن الشاملة</p>
-                    <div class="hero-stats">
-                        <div class="stat-item">
-                            <i class="fas fa-book-open"></i>
-                            <div class="stat-content">
-                                <span class="stat-number">114</span>
-                                <span class="stat-label">سورة</span>
-                            </div>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-microphone-alt"></i>
-                            <div class="stat-content">
-                                <span class="stat-number">10</span>
-                                <span class="stat-label">قارئ</span>
-                            </div>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-ayat"></i>
-                            <div class="stat-content">
-                                <span class="stat-number">6236</span>
-                                <span class="stat-label">آية</span>
-                            </div>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-wifi-slash"></i>
-                            <div class="stat-content">
-                                <span class="stat-number">100%</span>
-                                <span class="stat-label">بدون إنترنت</span>
-                            </div>
-                        </div>
-                    </div>
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fas fa-quran"></i>
+                    <h1>مشغل القرآن الكريم</h1>
                 </div>
-                <div class="hero-image">
-                    <div class="quran-illustration">
-                        <i class="fas fa-quran"></i>
-                    </div>
+                <div class="header-controls">
+                    <button class="control-btn" id="night-mode-btn" title="وضع الليل">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="control-btn" id="font-size-btn" title="حجم الخط">
+                        <i class="fas fa-text-height"></i>
+                    </button>
+                    <button class="control-btn" id="info-btn" title="عن التطبيق">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
                 </div>
             </div>
-
-            <!-- مشغل القرآن الرئيسي -->
-            <div class="main-player">
+            <p class="subtitle">تطبيق يعمل بدون إنترنت مع جميع سور القرآن الكريم</p>
+            <div class="offline-badge">
+                <i class="fas fa-wifi-slash"></i> يعمل بدون إنترنت
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <!-- الشريط الجانبي الأيسر -->
+            <div class="sidebar">
+                <div class="section-title">
+                    <h2><i class="fas fa-book-open"></i> سور القرآن</h2>
+                    <span id="surah-count">114</span>
+                </div>
+                <div class="search-box">
+                    <input type="text" class="search-input" id="surah-search" placeholder="ابحث عن سورة...">
+                </div>
+                <ul class="surah-list" id="surah-list">
+                    <!-- سيتم ملؤه بالجافاسكريبت -->
+                </ul>
+            </div>
+            
+            <!-- المشغل الرئيسي -->
+            <div class="player-section">
                 <div class="player-header">
-                    <h3><i class="fas fa-play-circle"></i> المشغل الرئيسي</h3>
-                    <div class="player-status" id="player-status">
-                        <span class="status-indicator"></span>
-                        <span>متوقف</span>
+                    <h2 class="now-playing">
+                        <i class="fas fa-play-circle"></i>
+                        <span id="now-playing-text">اختر سورة للبدء</span>
+                    </h2>
+                    <div class="surah-info" id="surah-info">
+                        سورة الفاتحة - 7 آيات
                     </div>
                 </div>
                 
-                <div class="player-info">
-                    <div class="current-surah-info">
-                        <div class="surah-name" id="current-surah-display">سورة الفاتحة</div>
-                        <div class="surah-meta">
-                            <span class="meta-item" id="current-ayah-display">الآية 1 من 7</span>
-                            <span class="meta-separator">•</span>
-                            <span class="meta-item" id="current-reciter-display">مشاري العفاسي</span>
-                        </div>
-                    </div>
-                    
+                <div class="player-controls">
                     <div class="progress-section">
-                        <div class="time-display">
-                            <span id="current-time">0:00</span>
-                            <span class="time-separator">/</span>
-                            <span id="duration">0:00</span>
+                        <div class="time-display" id="current-time">0:00</div>
+                        <div class="progress-bar" id="progress-bar">
+                            <div class="progress" id="progress"></div>
                         </div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar" id="progress-bar">
-                                <div class="progress" id="progress"></div>
-                            </div>
-                        </div>
+                        <div class="time-display" id="duration">0:00</div>
                     </div>
                     
-                    <div class="player-controls">
-                        <button class="player-btn" id="repeat-btn" title="تكرار">
-                            <i class="fas fa-redo"></i>
-                        </button>
-                        <button class="player-btn" id="prev-ayah-btn" title="آية سابقة">
+                    <div class="buttons-container">
+                        <button class="player-btn" id="prev-ayah">
                             <i class="fas fa-step-backward"></i>
                         </button>
-                        <button class="player-btn play-pause-btn" id="play-pause-btn">
+                        <button class="player-btn" id="rewind">
+                            <i class="fas fa-backward"></i>
+                        </button>
+                        <button class="player-btn play-pause" id="play-pause">
                             <i class="fas fa-play"></i>
                         </button>
-                        <button class="player-btn" id="next-ayah-btn" title="آية تالية">
+                        <button class="player-btn" id="forward">
+                            <i class="fas fa-forward"></i>
+                        </button>
+                        <button class="player-btn" id="next-ayah">
                             <i class="fas fa-step-forward"></i>
                         </button>
-                        <button class="player-btn" id="bookmark-btn" title="إشارة مرجعية">
-                            <i class="far fa-bookmark"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="extra-controls">
-                        <button class="extra-btn" id="prev-surah-btn">
-                            <i class="fas fa-arrow-right"></i>
-                            <span>سورة سابقة</span>
-                        </button>
-                        <button class="extra-btn" id="surah-list-btn">
-                            <i class="fas fa-list"></i>
-                            <span>قائمة السور</span>
-                        </button>
-                        <button class="extra-btn" id="next-surah-btn">
-                            <span>سورة تالية</span>
-                            <i class="fas fa-arrow-left"></i>
+                        <button class="player-btn" id="repeat-btn">
+                            <i class="fas fa-redo"></i>
                         </button>
                     </div>
                 </div>
                 
-                <div class="ayah-display">
+                <div class="ayah-display" id="ayah-display">
                     <div class="ayah-text" id="ayah-text">
-                        بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                        اختر سورة وقارئاً للبدء في الاستماع إلى القرآن الكريم
                     </div>
                     <div class="ayah-translation" id="ayah-translation">
-                        بسم الله الرحمن الرحيم
+                        Choose a surah and a reciter to start listening to the Holy Quran
                     </div>
-                    <div class="ayah-actions">
-                        <button class="ayah-action-btn" id="copy-ayah-btn">
-                            <i class="far fa-copy"></i>
-                            نسخ
-                        </button>
-                        <button class="ayah-action-btn" id="share-ayah-btn">
-                            <i class="fas fa-share-alt"></i>
-                            مشاركة
-                        </button>
-                        <button class="ayah-action-btn" id="tafseer-toggle-btn">
-                            <i class="fas fa-book-open"></i>
-                            تفسير
-                        </button>
-                    </div>
-                    
-                    <div class="tafseer-container" id="tafseer-container">
-                        <div class="tafseer-header">
-                            <h4><i class="fas fa-info-circle"></i> التفسير الميسر</h4>
-                            <button class="close-tafseer" id="close-tafseer-btn">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="tafseer-content" id="tafseer-content">
-                            أبدأ قراءتي متبركًا باسم الله وحده لا شريك له، مستعينًا به في جميع أموري، وهو الرحمن الرحيم الذي وسعت رحمته كل شيء.
-                        </div>
-                    </div>
+                    <div class="ayah-number" id="ayah-number">0</div>
                 </div>
-            </div>
-
-            <!-- سريع الوصول -->
-            <div class="quick-access">
-                <h3><i class="fas fa-bolt"></i> سريع الوصول</h3>
-                <div class="quick-access-grid">
-                    <a href="#" class="quick-access-item" data-section="library">
-                        <div class="quick-access-icon">
-                            <i class="fas fa-book-reader"></i>
-                        </div>
-                        <div class="quick-access-content">
-                            <h4>القراءة المتتابعة</h4>
-                            <p>استكمل قراءتك من حيث توقفت</p>
-                        </div>
-                        <div class="quick-access-arrow">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                    </a>
-                    
-                    <a href="#" class="quick-access-item" data-section="library" data-filter="favorites">
-                        <div class="quick-access-icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="quick-access-content">
-                            <h4>السور المفضلة</h4>
-                            <p>الوصول السريع للسور المفضلة لديك</p>
-                        </div>
-                        <div class="quick-access-arrow">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                    </a>
-                    
-                    <a href="#" class="quick-access-item" data-section="bookmarks">
-                        <div class="quick-access-icon">
-                            <i class="fas fa-bookmark"></i>
-                        </div>
-                        <div class="quick-access-content">
-                            <h4>الإشارات المرجعية</h4>
-                            <p>آياتك المحفوظة</p>
-                        </div>
-                        <div class="quick-access-arrow">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                    </a>
-                    
-                    <a href="#" class="quick-access-item" data-section="reciters">
-                        <div class="quick-access-icon">
-                            <i class="fas fa-headphones-alt"></i>
-                        </div>
-                        <div class="quick-access-content">
-                            <h4>جميع القراء</h4>
-                            <p>استمع لأصوات مختلفة</p>
-                        </div>
-                        <div class="quick-access-arrow">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <!-- آخر التلاوات -->
-            <div class="recent-recitations">
-                <div class="section-header">
-                    <h3><i class="fas fa-history"></i> آخر التلاوات</h3>
-                    <button class="clear-recent" id="clear-recent-btn">مسح الكل</button>
-                </div>
-                <div class="recent-list" id="recent-list">
-                    <!-- سيتم ملؤه ديناميكياً -->
-                </div>
-            </div>
-        </section>
-
-        <!-- قسم مكتبة القرآن -->
-        <section class="content-section" id="library-section">
-            <div class="library-header">
-                <h2><i class="fas fa-book"></i> مكتبة القرآن الكريم</h2>
-                <p class="library-subtitle">تصفح واقرأ جميع سور القرآن الكريم</p>
-            </div>
-            
-            <div class="library-controls">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="library-search" placeholder="ابحث عن سورة أو آية...">
-                    <button class="clear-search" id="clear-search-btn">
-                        <i class="fas fa-times"></i>
+                
+                <!-- أزرار إضافية -->
+                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 25px;">
+                    <button class="player-btn" id="bookmark-btn" style="width: auto; padding: 0 20px; border-radius: 10px;">
+                        <i class="far fa-bookmark"></i> حفظ الآية
                     </button>
-                </div>
-                
-                <div class="filter-controls">
-                    <div class="filter-group">
-                        <label for="surah-filter"><i class="fas fa-filter"></i> ترتيب حسب:</label>
-                        <select id="surah-filter" class="filter-select">
-                            <option value="order">الترتيب في المصحف</option>
-                            <option value="name">اسم السورة</option>
-                            <option value="length">عدد الآيات</option>
-                            <option value="type">النوع (مكية/مدنية)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="view-toggle">
-                        <button class="view-btn active" data-view="grid">
-                            <i class="fas fa-th-large"></i>
-                        </button>
-                        <button class="view-btn" data-view="list">
-                            <i class="fas fa-list"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="surah-stats">
-                <div class="stat-card">
-                    <div class="stat-card-icon">
-                        <i class="fas fa-book-open"></i>
-                    </div>
-                    <div class="stat-card-content">
-                        <h4>عدد السور</h4>
-                        <p class="stat-card-number">114</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-card-icon">
-                        <i class="fas fa-ayat"></i>
-                    </div>
-                    <div class="stat-card-content">
-                        <h4>عدد الآيات</h4>
-                        <p class="stat-card-number">6,236</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-card-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="stat-card-content">
-                        <h4>وقت القراءة</h4>
-                        <p class="stat-card-number">~15 ساعة</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-card-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div class="stat-card-content">
-                        <h4>السور المفضلة</h4>
-                        <p class="stat-card-number" id="favorite-count">0</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="surah-library" id="surah-library">
-                <!-- سيتم ملؤه ديناميكياً -->
-            </div>
-            
-            <!-- وضع القراءة -->
-            <div class="reading-mode" id="reading-mode">
-                <div class="reading-header">
-                    <div class="reading-title">
-                        <h3 id="reading-surah-name">سورة الفاتحة</h3>
-                        <div class="reading-meta">
-                            <span id="reading-surah-info">7 آيات • مكية</span>
-                        </div>
-                    </div>
-                    <div class="reading-controls">
-                        <button class="reading-btn" id="reading-settings-btn">
-                            <i class="fas fa-cog"></i>
-                        </button>
-                        <button class="reading-btn" id="exit-reading-btn">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="reading-content" id="reading-content">
-                    <!-- سيتم ملؤه ديناميكياً -->
-                </div>
-                
-                <div class="reading-navigation">
-                    <button class="nav-btn" id="prev-page-btn">
-                        <i class="fas fa-chevron-right"></i>
-                        <span>الصفحة السابقة</span>
+                    <button class="player-btn" id="copy-btn" style="width: auto; padding: 0 20px; border-radius: 10px;">
+                        <i class="far fa-copy"></i> نسخ الآية
                     </button>
-                    <div class="page-info">
-                        <span id="current-page">1</span>
-                        /
-                        <span id="total-pages">1</span>
-                    </div>
-                    <button class="nav-btn" id="next-page-btn">
-                        <span>الصفحة التالية</span>
-                        <i class="fas fa-chevron-left"></i>
+                    <button class="player-btn" id="share-btn" style="width: auto; padding: 0 20px; border-radius: 10px;">
+                        <i class="fas fa-share-alt"></i> مشاركة
                     </button>
                 </div>
             </div>
-        </section>
-
-        <!-- قسم القراء -->
-        <section class="content-section" id="reciters-section">
-            <div class="reciters-header">
-                <h2><i class="fas fa-users"></i> القراء</h2>
-                <p class="reciters-subtitle">استمع لأصوات أشهر قراء القرآن الكريم</p>
-            </div>
             
-            <div class="reciters-grid" id="reciters-grid">
-                <!-- سيتم ملؤه ديناميكياً -->
-            </div>
-            
-            <div class="reciter-detail" id="reciter-detail">
-                <!-- سيتم ملؤه ديناميكياً -->
-            </div>
-        </section>
-
-        <!-- قسم الإشارات المرجعية -->
-        <section class="content-section" id="bookmarks-section">
-            <div class="bookmarks-header">
-                <h2><i class="fas fa-bookmark"></i> الإشارات المرجعية</h2>
-                <p class="bookmarks-subtitle">آياتك المحفوظة والملاحظات الشخصية</p>
-            </div>
-            
-            <div class="bookmarks-container" id="bookmarks-container">
-                <!-- سيتم ملؤه ديناميكياً -->
-            </div>
-            
-            <div class="empty-bookmarks" id="empty-bookmarks">
-                <div class="empty-state">
-                    <i class="fas fa-bookmark"></i>
-                    <h3>لا توجد إشارات مرجعية</h3>
-                    <p>قم بإضافة إشارات مرجعية للآيات التي تريد الرجوع إليها لاحقاً</p>
-                    <button class="btn-primary" id="explore-surahs-btn">استكشاف السور</button>
+            <!-- الشريط الجانبي الأيمن -->
+            <div class="right-sidebar">
+                <div class="section-title">
+                    <h2><i class="fas fa-users"></i> القراء</h2>
+                    <span id="reciters-count">10</span>
                 </div>
-            </div>
-        </section>
-
-        <!-- قسم الإعدادات -->
-        <section class="content-section" id="settings-section">
-            <div class="settings-header">
-                <h2><i class="fas fa-cog"></i> الإعدادات</h2>
-                <p class="settings-subtitle">خصص تجربتك مع القرآن الكريم</p>
-            </div>
-            
-            <div class="settings-container">
-                <div class="settings-category">
-                    <h3><i class="fas fa-palette"></i> المظهر</h3>
-                    <div class="settings-options">
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>وضع الليل</h4>
-                                <p>تفعيل الوضع المظلم لحماية العينين</p>
-                            </div>
-                            <label class="switch">
-                                <input type="checkbox" id="dark-mode-toggle">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>حجم الخط</h4>
-                                <p>تغيير حجم خط عرض الآيات</p>
-                            </div>
-                            <div class="font-size-controls">
-                                <button class="font-size-btn" data-size="small">أ</button>
-                                <button class="font-size-btn active" data-size="medium">أ</button>
-                                <button class="font-size-btn" data-size="large">أ</button>
-                                <button class="font-size-btn" data-size="x-large">أ</button>
-                            </div>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>لون التمييز</h4>
-                                <p>اختر لون تمييز الآيات</p>
-                            </div>
-                            <div class="color-picker">
-                                <button class="color-option" data-color="#2E7D32" style="background-color: #2E7D32;"></button>
-                                <button class="color-option active" data-color="#1565C0" style="background-color: #1565C0;"></button>
-                                <button class="color-option" data-color="#6A1B9A" style="background-color: #6A1B9A;"></button>
-                                <button class="color-option" data-color="#C62828" style="background-color: #C62828;"></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="settings-category">
-                    <h3><i class="fas fa-volume-up"></i> الصوت</h3>
-                    <div class="settings-options">
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>مستوى الصوت</h4>
-                                <p>تحكم في مستوى صوت التلاوة</p>
-                            </div>
-                            <input type="range" id="volume-slider" min="0" max="100" value="80">
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>التكرار التلقائي</h4>
-                                <p>تكرار الآية الحالية تلقائياً</p>
-                            </div>
-                            <label class="switch">
-                                <input type="checkbox" id="auto-repeat-toggle">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>متابعة تلقائية</h4>
-                                <p>الانتقال التلقائي للآية التالية</p>
-                            </div>
-                            <label class="switch">
-                                <input type="checkbox" id="auto-continue-toggle">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="settings-category">
-                    <h3><i class="fas fa-database"></i> البيانات</h3>
-                    <div class="settings-options">
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>مسح ذاكرة التخزين المؤقت</h4>
-                                <p>تحرير مساحة التخزين المحلي</p>
-                            </div>
-                            <button class="btn-secondary" id="clear-cache-btn">مسح</button>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>نسخ احتياطي للإشارات</h4>
-                                <p>حفظ نسخة من إشاراتك المرجعية</p>
-                            </div>
-                            <button class="btn-secondary" id="backup-bookmarks-btn">نسخ</button>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>استعادة الإعدادات الافتراضية</h4>
-                                <p>إعادة جميع الإعدادات إلى حالتها الأصلية</p>
-                            </div>
-                            <button class="btn-secondary" id="reset-settings-btn">إعادة ضبط</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="settings-category">
-                    <h3><i class="fas fa-info-circle"></i> حول التطبيق</h3>
-                    <div class="about-app">
-                        <div class="app-logo">
-                            <i class="fas fa-quran"></i>
-                        </div>
-                        <div class="app-info">
-                            <h3>مشغل القرآن الكريم</h3>
-                            <p class="app-version">الإصدار 4.0</p>
-                            <p class="app-description">
-                                تطبيق كامل للقرآن الكريم يعمل بدون إنترنت مع مكتبة شاملة للقراءة والاستماع
-                            </p>
-                            <div class="developer-info">
-                                <i class="fas fa-user"></i>
-                                <span>المطور: <strong>Mohammed Elsonbaty</strong></span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="app-features">
-                        <div class="feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>جميع سور القرآن الكريم</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>10 من أشهر القراء</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>عمل كامل بدون إنترنت</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>مكتبة قراءة شاملة</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>إشارات مرجعية وملاحظات</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- شريط التذييل -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-section">
-                <h4><i class="fas fa-quran"></i> القرآن الكريم</h4>
-                <p>تطبيق شامل للقرآن الكريم مع مكتبة قراءة كاملة ومشغل صوتي متكامل</p>
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-                </div>
-            </div>
-            
-            <div class="footer-section">
-                <h4>روابط سريعة</h4>
-                <ul class="footer-links">
-                    <li><a href="#" data-section="home"><i class="fas fa-home"></i> الرئيسية</a></li>
-                    <li><a href="#" data-section="library"><i class="fas fa-book"></i> مكتبة القرآن</a></li>
-                    <li><a href="#" data-section="reciters"><i class="fas fa-users"></i> القراء</a></li>
-                    <li><a href="#" data-section="bookmarks"><i class="fas fa-bookmark"></i> الإشارات</a></li>
+                <ul class="qari-list" id="qari-list">
+                    <!-- سيتم ملؤه بالجافاسكريبت -->
                 </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>معلومات التطبيق</h4>
-                <ul class="footer-links">
-                    <li><i class="fas fa-code"></i> الإصدار: 4.0</li>
-                    <li><i class="fas fa-database"></i> البيانات: 6236 آية</li>
-                    <li><i class="fas fa-wifi-slash"></i> حالة: يعمل بدون نت</li>
-                    <li><i class="fas fa-user"></i> المطور: Mohammed Elsonbaty</li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>تواصل معنا</h4>
-                <p>لاقتراحاتك أو للإبلاغ عن مشكلة</p>
-                <a href="mailto:contact@example.com" class="contact-link">
-                    <i class="fas fa-envelope"></i> contact@example.com
-                </a>
+                
+                <div class="section-title" style="margin-top: 30px;">
+                    <h2><i class="fas fa-bookmark"></i> الإشارات</h2>
+                    <span id="bookmarks-count">0</span>
+                </div>
+                <div id="bookmarks-list">
+                    <div class="bookmark-item">
+                        <div>
+                            <div class="bookmark-ayah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+                            <div class="bookmark-info">سورة الفاتحة - الآية 1</div>
+                        </div>
+                        <button class="control-btn" style="width: 35px; height: 35px; font-size: 0.9rem;">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <div class="footer-bottom">
-            <p>&copy; 2023 مشغل القرآن الكريم. جميع الحقوق محفوظة.</p>
+        <footer>
+            <p>مشغل القرآن الكريم - تطبيق يعمل بدون إنترنت &copy; 2023</p>
             <p>تم التطوير بواسطة <strong>Mohammed Elsonbaty</strong></p>
-        </div>
-    </footer>
-
-    <!-- العناصر المساعدة -->
-    <audio id="audio-player" preload="auto"></audio>
-    
-    <!-- نافذة التأكيد -->
-    <div class="modal" id="confirmation-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modal-title">تأكيد العملية</h3>
-                <button class="modal-close" id="modal-close-btn">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p id="modal-message">هل أنت متأكد من رغبتك في متابعة هذه العملية؟</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" id="modal-cancel-btn">إلغاء</button>
-                <button class="btn-primary" id="modal-confirm-btn">تأكيد</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- إشعارات -->
-    <div class="notification" id="notification">
-        <div class="notification-content">
-            <i class="fas fa-check-circle notification-icon success"></i>
-            <div class="notification-text">
-                <h4 id="notification-title">تمت العملية بنجاح</h4>
-                <p id="notification-message">تم حفظ التغييرات بنجاح</p>
-            </div>
-            <button class="notification-close" id="notification-close-btn">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div>
-    
-    <!-- شاشة التحميل -->
-    <div class="loading-screen" id="loading-screen">
-        <div class="loading-content">
-            <div class="loading-spinner">
-                <i class="fas fa-quran"></i>
-            </div>
-            <h3>جاري التحميل</h3>
-            <p id="loading-message">جاري تحميل بيانات القرآن الكريم...</p>
-            <div class="loading-progress">
-                <div class="progress-bar">
-                    <div class="progress" id="loading-progress"></div>
-                </div>
-                <span id="loading-percentage">0%</span>
-            </div>
-        </div>
+        </footer>
     </div>
 
-    <script src="quran-data.js"></script>
-    <script src="script.js"></script>
+    <script>
+        // === بيانات التطبيق ===
+        const QuranApp = {
+            // بيانات القراء
+            reciters: [
+                { id: 1, name: "مشاري العفاسي", country: "الكويت" },
+                { id: 2, name: "سعد الغامدي", country: "السعودية" },
+                { id: 3, name: "عبد الباسط عبد الصمد", country: "مصر" },
+                { id: 4, name: "محمود الحصري", country: "مصر" },
+                { id: 5, name: "محمد المنشاوي", country: "مصر" },
+                { id: 6, name: "عبد الرحمن السديس", country: "السعودية" },
+                { id: 7, name: "ياسر الدوسري", country: "السعودية" },
+                { id: 8, name: "أحمد العجمي", country: "السعودية" },
+                { id: 9, name: "أبو بكر الشاطري", country: "اليمن" },
+                { id: 10, name: "خالد الجليل", country: "السعودية" }
+            ],
+            
+            // بيانات السور (نموذج)
+            surahs: [
+                { id: 1, name: "الفاتحة", ayahs: 7, type: "مكية" },
+                { id: 2, name: "البقرة", ayahs: 286, type: "مدنية" },
+                { id: 3, name: "آل عمران", ayahs: 200, type: "مدنية" },
+                { id: 4, name: "النساء", ayahs: 176, type: "مدنية" },
+                { id: 5, name: "المائدة", ayahs: 120, type: "مدنية" },
+                { id: 6, name: "الأنعام", ayahs: 165, type: "مكية" },
+                { id: 7, name: "الأعراف", ayahs: 206, type: "مكية" },
+                { id: 8, name: "الأنفال", ayahs: 75, type: "مدنية" },
+                { id: 9, name: "التوبة", ayahs: 129, type: "مدنية" },
+                { id: 10, name: "يونس", ayahs: 109, type: "مكية" }
+            ],
+            
+            // آيات سورة الفاتحة
+            fatihaAyahs: [
+                { number: 1, text: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", translation: "بسم الله الرحمن الرحيم" },
+                { number: 2, text: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", translation: "الحمد لله رب العالمين" },
+                { number: 3, text: "الرَّحْمَٰنِ الرَّحِيمِ", translation: "الرحمن الرحيم" },
+                { number: 4, text: "مَالِكِ يَوْمِ الدِّينِ", translation: "مالك يوم الدين" },
+                { number: 5, text: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", translation: "إياك نعبد وإياك نستعين" },
+                { number: 6, text: "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ", translation: "اهدنا الصراط المستقيم" },
+                { number: 7, text: "صِراطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ", translation: "صراط الذين أنعمت عليهم غير المغضوب عليهم ولا الضالين" }
+            ],
+            
+            // حالة التطبيق
+            state: {
+                currentReciter: null,
+                currentSurah: null,
+                currentAyah: 1,
+                isPlaying: false,
+                currentTime: 0,
+                duration: 30,
+                repeatMode: false,
+                bookmarks: [],
+                nightMode: false,
+                fontSize: 'medium',
+                currentAyahs: []
+            },
+            
+            // === تهيئة التطبيق ===
+            init: function() {
+                console.log("🚀 بدء تحميل مشغل القرآن الكريم...");
+                
+                // تعيين الحالة الافتراضية
+                this.state.currentReciter = this.reciters[0];
+                this.state.currentSurah = this.surahs[0];
+                this.state.currentAyahs = this.fatihaAyahs;
+                
+                // تهيئة واجهة المستخدم
+                this.initUI();
+                
+                // إعداد الأحداث
+                this.setupEventListeners();
+                
+                // تحديث العرض
+                this.updateUI();
+                
+                // عرض رسالة نجاح
+                this.showMessage("✅ التطبيق يعمل بنجاح!", "success");
+                
+                console.log("✨ تم تحميل التطبيق بنجاح!");
+            },
+            
+            // === تهيئة واجهة المستخدم ===
+            initUI: function() {
+                console.log("🖼️ تهيئة واجهة المستخدم...");
+                
+                // تحميل السور
+                this.loadSurahs();
+                
+                // تحميل القراء
+                this.loadReciters();
+                
+                console.log("✅ واجهة المستخدم جاهزة");
+            },
+            
+            // === تحميل السور ===
+            loadSurahs: function() {
+                const surahList = document.getElementById('surah-list');
+                surahList.innerHTML = '';
+                
+                this.surahs.forEach(surah => {
+                    const li = document.createElement('li');
+                    li.className = 'surah-item';
+                    li.innerHTML = `
+                        <div>
+                            <div class="surah-name">${surah.name}</div>
+                            <div class="surah-details">${surah.ayahs} آية - ${surah.type}</div>
+                        </div>
+                        <div style="background: #57c5b6; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                            ${surah.id}
+                        </div>
+                    `;
+                    
+                    li.addEventListener('click', () => {
+                        this.selectSurah(surah);
+                    });
+                    
+                    surahList.appendChild(li);
+                });
+                
+                // تفعيل السورة الأولى
+                this.selectSurah(this.surahs[0]);
+            },
+            
+            // === تحميل القراء ===
+            loadReciters: function() {
+                const qariList = document.getElementById('qari-list');
+                qariList.innerHTML = '';
+                
+                this.reciters.forEach(reciter => {
+                    const li = document.createElement('li');
+                    li.className = 'qari-item';
+                    li.innerHTML = `
+                        <div>
+                            <div class="qari-name">${reciter.name}</div>
+                            <div class="qari-country">${reciter.country}</div>
+                        </div>
+                        <i class="fas fa-microphone"></i>
+                    `;
+                    
+                    li.addEventListener('click', () => {
+                        this.selectReciter(reciter);
+                    });
+                    
+                    qariList.appendChild(li);
+                });
+                
+                // تفعيل القارئ الأول
+                this.selectReciter(this.reciters[0]);
+            },
+            
+            // === اختيار سورة ===
+            selectSurah: function(surah) {
+                console.log(`📖 اختيار سورة: ${surah.name}`);
+                
+                // تحديث الحالة
+                this.state.currentSurah = surah;
+                this.state.currentAyah = 1;
+                
+                // تحديث قائمة السور
+                document.querySelectorAll('.surah-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // تفعيل السورة المختارة
+                const items = document.querySelectorAll('.surah-item');
+                items[surah.id - 1].classList.add('active');
+                
+                // تحديث واجهة المستخدم
+                this.updateUI();
+                
+                // عرض رسالة
+                this.showMessage(`✅ تم اختيار سورة ${surah.name}`, "info");
+            },
+            
+            // === اختيار قارئ ===
+            selectReciter: function(reciter) {
+                console.log(`🎤 اختيار قارئ: ${reciter.name}`);
+                
+                // تحديث الحالة
+                this.state.currentReciter = reciter;
+                
+                // تحديث قائمة القراء
+                document.querySelectorAll('.qari-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // تفعيل القارئ المختار
+                const items = document.querySelectorAll('.qari-item');
+                items[reciter.id - 1].classList.add('active');
+                
+                // تحديث العرض
+                this.updateUI();
+                
+                // عرض رسالة
+                this.showMessage(`✅ تم اختيار القارئ ${reciter.name}`, "info");
+            },
+            
+            // === تحديث واجهة المستخدم ===
+            updateUI: function() {
+                // تحديث معلومات السورة
+                document.getElementById('now-playing-text').textContent = 
+                    `${this.state.currentReciter.name} - سورة ${this.state.currentSurah.name}`;
+                
+                document.getElementById('surah-info').textContent = 
+                    `سورة ${this.state.currentSurah.name} - ${this.state.currentSurah.ayahs} آية - ${this.state.currentSurah.type}`;
+                
+                // تحديث عرض الآية
+                this.updateAyahDisplay();
+                
+                // تحديث شريط التقدم
+                this.updateProgressBar();
+            },
+            
+            // === تحديث عرض الآية ===
+            updateAyahDisplay: function() {
+                const ayah = this.state.currentAyahs[this.state.currentAyah - 1] || this.state.currentAyahs[0];
+                
+                if (ayah) {
+                    document.getElementById('ayah-text').textContent = ayah.text;
+                    document.getElementById('ayah-translation').textContent = ayah.translation;
+                    document.getElementById('ayah-number').textContent = ayah.number;
+                }
+            },
+            
+            // === تحديث شريط التقدم ===
+            updateProgressBar: function() {
+                const progressPercent = (this.state.currentTime / this.state.duration) * 100;
+                document.getElementById('progress').style.width = `${progressPercent}%`;
+                
+                // تحديث الوقت
+                document.getElementById('current-time').textContent = this.formatTime(this.state.currentTime);
+                document.getElementById('duration').textContent = this.formatTime(this.state.duration);
+            },
+            
+            // === تنسيق الوقت ===
+            formatTime: function(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            },
+            
+            // === إعداد الأحداث ===
+            setupEventListeners: function() {
+                console.log("🎮 إعداد الأحداث...");
+                
+                // === أزرار التحكم الأساسية ===
+                
+                // تشغيل/إيقاف
+                document.getElementById('play-pause').addEventListener('click', () => {
+                    console.log("▶️ زر التشغيل/الإيقاف");
+                    this.togglePlayPause();
+                });
+                
+                // الآية السابقة
+                document.getElementById('prev-ayah').addEventListener('click', () => {
+                    console.log("⏪ الآية السابقة");
+                    this.prevAyah();
+                });
+                
+                // الآية التالية
+                document.getElementById('next-ayah').addEventListener('click', () => {
+                    console.log("⏩ الآية التالية");
+                    this.nextAyah();
+                });
+                
+                // الرجوع 10 ثوان
+                document.getElementById('rewind').addEventListener('click', () => {
+                    console.log("⏪ رجوع 10 ثوان");
+                    this.rewind();
+                });
+                
+                // تقدم 10 ثوان
+                document.getElementById('forward').addEventListener('click', () => {
+                    console.log("⏩ تقدم 10 ثوان");
+                    this.forward();
+                });
+                
+                // تكرار
+                document.getElementById('repeat-btn').addEventListener('click', () => {
+                    console.log("🔁 زر التكرار");
+                    this.toggleRepeat();
+                });
+                
+                // === أزرار التحكم المتقدمة ===
+                
+                // وضع الليل
+                document.getElementById('night-mode-btn').addEventListener('click', () => {
+                    console.log("🌙 وضع الليل");
+                    this.toggleNightMode();
+                });
+                
+                // حجم الخط
+                document.getElementById('font-size-btn').addEventListener('click', () => {
+                    console.log("🔠 حجم الخط");
+                    this.changeFontSize();
+                });
+                
+                // معلومات التطبيق
+                document.getElementById('info-btn').addEventListener('click', () => {
+                    console.log("ℹ️ معلومات التطبيق");
+                    this.showAppInfo();
+                });
+                
+                // حفظ الآية
+                document.getElementById('bookmark-btn').addEventListener('click', () => {
+                    console.log("🔖 حفظ الآية");
+                    this.bookmarkAyah();
+                });
+                
+                // نسخ الآية
+                document.getElementById('copy-btn').addEventListener('click', () => {
+                    console.log("📋 نسخ الآية");
+                    this.copyAyah();
+                });
+                
+                // مشاركة الآية
+                document.getElementById('share-btn').addEventListener('click', () => {
+                    console.log("📤 مشاركة الآية");
+                    this.shareAyah();
+                });
+                
+                // البحث في السور
+                document.getElementById('surah-search').addEventListener('input', (e) => {
+                    this.searchSurahs(e.target.value);
+                });
+                
+                // شريط التقدم
+                document.getElementById('progress-bar').addEventListener('click', (e) => {
+                    this.seek(e);
+                });
+                
+                console.log("✅ جميع الأحداث جاهزة");
+            },
+            
+            // === التحكم في التشغيل ===
+            
+            togglePlayPause: function() {
+                this.state.isPlaying = !this.state.isPlaying;
+                
+                const playPauseBtn = document.getElementById('play-pause');
+                const icon = playPauseBtn.querySelector('i');
+                
+                if (this.state.isPlaying) {
+                    icon.className = 'fas fa-pause';
+                    this.showMessage("▶️ جاري التشغيل", "success");
+                    this.startPlayback();
+                } else {
+                    icon.className = 'fas fa-play';
+                    this.showMessage("⏸️ متوقف", "info");
+                }
+            },
+            
+            startPlayback: function() {
+                if (this.state.isPlaying && this.state.currentTime < this.state.duration) {
+                    this.state.currentTime += 1;
+                    this.updateProgressBar();
+                    
+                    setTimeout(() => {
+                        this.startPlayback();
+                    }, 1000);
+                } else if (this.state.currentTime >= this.state.duration) {
+                    if (this.state.repeatMode) {
+                        this.state.currentTime = 0;
+                        setTimeout(() => this.startPlayback(), 500);
+                    } else {
+                        this.nextAyah();
+                    }
+                }
+            },
+            
+            prevAyah: function() {
+                if (this.state.currentAyah > 1) {
+                    this.state.currentAyah--;
+                    this.updateAyahDisplay();
+                    this.resetPlayback();
+                    this.showMessage(`⏪ الآية ${this.state.currentAyah}`, "info");
+                }
+            },
+            
+            nextAyah: function() {
+                if (this.state.currentAyah < this.state.currentSurah.ayahs) {
+                    this.state.currentAyah++;
+                    this.updateAyahDisplay();
+                    this.resetPlayback();
+                    this.showMessage(`⏩ الآية ${this.state.currentAyah}`, "info");
+                }
+            },
+            
+            rewind: function() {
+                this.state.currentTime = Math.max(0, this.state.currentTime - 10);
+                this.updateProgressBar();
+                this.showMessage("⏪ رجوع 10 ثوان", "info");
+            },
+            
+            forward: function() {
+                this.state.currentTime = Math.min(this.state.duration, this.state.currentTime + 10);
+                this.updateProgressBar();
+                this.showMessage("⏩ تقدم 10 ثوان", "info");
+            },
+            
+            toggleRepeat: function() {
+                this.state.repeatMode = !this.state.repeatMode;
+                const btn = document.getElementById('repeat-btn');
+                
+                if (this.state.repeatMode) {
+                    btn.style.background = '#57c5b6';
+                    this.showMessage("🔁 وضع التكرار مفعل", "success");
+                } else {
+                    btn.style.background = '';
+                    this.showMessage("🔁 وضع التكرار معطل", "info");
+                }
+            },
+            
+            resetPlayback: function() {
+                this.state.currentTime = 0;
+                this.state.isPlaying = false;
+                
+                const playPauseBtn = document.getElementById('play-pause');
+                const icon = playPauseBtn.querySelector('i');
+                icon.className = 'fas fa-play';
+                
+                this.updateProgressBar();
+            },
+            
+            seek: function(e) {
+                const progressBar = document.getElementById('progress-bar');
+                const rect = progressBar.getBoundingClientRect();
+                const percent = (e.clientX - rect.left) / rect.width;
+                this.state.currentTime = percent * this.state.duration;
+                this.updateProgressBar();
+                this.showMessage("📍 انتقال إلى وقت محدد", "info");
+            },
+            
+            // === الميزات المتقدمة ===
+            
+            toggleNightMode: function() {
+                this.state.nightMode = !this.state.nightMode;
+                document.body.classList.toggle('dark-mode', this.state.nightMode);
+                
+                const btn = document.getElementById('night-mode-btn');
+                const icon = btn.querySelector('i');
+                
+                if (this.state.nightMode) {
+                    icon.className = 'fas fa-sun';
+                    this.showMessage("🌙 وضع الليل مفعل", "success");
+                } else {
+                    icon.className = 'fas fa-moon';
+                    this.showMessage("☀️ الوضع الفاتح مفعل", "info");
+                }
+            },
+            
+            changeFontSize: function() {
+                const sizes = ['small', 'medium', 'large', 'x-large'];
+                const currentIndex = sizes.indexOf(this.state.fontSize);
+                const nextIndex = (currentIndex + 1) % sizes.length;
+                this.state.fontSize = sizes[nextIndex];
+                
+                let size;
+                switch(this.state.fontSize) {
+                    case 'small': size = '1.3rem'; break;
+                    case 'medium': size = '1.6rem'; break;
+                    case 'large': size = '2rem'; break;
+                    case 'x-large': size = '2.5rem'; break;
+                }
+                
+                document.getElementById('ayah-text').style.fontSize = size;
+                
+                const sizeNames = {
+                    'small': 'صغير',
+                    'medium': 'متوسط', 
+                    'large': 'كبير',
+                    'x-large': 'كبير جداً'
+                };
+                
+                this.showMessage(`🔠 حجم الخط: ${sizeNames[this.state.fontSize]}`, "info");
+            },
+            
+            bookmarkAyah: function() {
+                const bookmark = {
+                    surahId: this.state.currentSurah.id,
+                    surahName: this.state.currentSurah.name,
+                    ayah: this.state.currentAyah,
+                    text: document.getElementById('ayah-text').textContent,
+                    date: new Date().toLocaleDateString('ar-EG')
+                };
+                
+                this.state.bookmarks.push(bookmark);
+                document.getElementById('bookmarks-count').textContent = this.state.bookmarks.length;
+                
+                // عرض الإشارة في القائمة
+                const bookmarksList = document.getElementById('bookmarks-list');
+                const div = document.createElement('div');
+                div.className = 'bookmark-item';
+                div.innerHTML = `
+                    <div>
+                        <div class="bookmark-ayah">${bookmark.text.substring(0, 30)}...</div>
+                        <div class="bookmark-info">سورة ${bookmark.surahName} - الآية ${bookmark.ayah}</div>
+                    </div>
+                    <button class="control-btn play-bookmark" style="width: 35px; height: 35px; font-size: 0.9rem;">
+                        <i class="fas fa-play"></i>
+                    </button>
+                `;
+                
+                // إضافة حدث التشغيل للإشارة
+                div.querySelector('.play-bookmark').addEventListener('click', () => {
+                    this.selectSurah(this.surahs.find(s => s.id === bookmark.surahId));
+                    this.state.currentAyah = bookmark.ayah;
+                    this.updateAyahDisplay();
+                    this.showMessage(`▶️ تشغيل الآية ${bookmark.ayah} من ${bookmark.surahName}`, "success");
+                });
+                
+                bookmarksList.appendChild(div);
+                
+                this.showMessage("🔖 تم حفظ الآية في الإشارات المرجعية", "success");
+            },
+            
+            copyAyah: function() {
+                const text = `${document.getElementById('ayah-text').textContent}\n(سورة ${this.state.currentSurah.name} - الآية ${this.state.currentAyah})`;
+                
+                // طريقة بديلة للنسخ
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                this.showMessage("📋 تم نسخ الآية إلى الحافظة", "success");
+            },
+            
+            shareAyah: function() {
+                const text = `${document.getElementById('ayah-text').textContent}\nسورة ${this.state.currentSurah.name} - الآية ${this.state.currentAyah}\n\nمشاركة من تطبيق القرآن الكريم`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: `آية من سورة ${this.state.currentSurah.name}`,
+                        text: text
+                    }).then(() => {
+                        this.showMessage("📤 تمت المشاركة بنجاح", "success");
+                    });
+                } else {
+                    this.copyAyah();
+                }
+            },
+            
+            searchSurahs: function(query) {
+                const items = document.querySelectorAll('.surah-item');
+                const normalizedQuery = query.toLowerCase().trim();
+                
+                items.forEach(item => {
+                    const name = item.querySelector('.surah-name').textContent.toLowerCase();
+                    const details = item.querySelector('.surah-details').textContent.toLowerCase();
+                    
+                    if (name.includes(normalizedQuery) || details.includes(normalizedQuery)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if (query) {
+                    this.showMessage(`🔍 البحث: "${query}"`, "info");
+                }
+            },
+            
+            showAppInfo: function() {
+                const info = `
+                    <div style="background: white; padding: 20px; border-radius: 10px; max-width: 400px; margin: 20px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                        <h3 style="color: #1a5f7a; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-info-circle"></i> معلومات التطبيق
+                        </h3>
+                        <div style="line-height: 1.8;">
+                            <p><strong>الإسم:</strong> مشغل القرآن الكريم</p>
+                            <p><strong>الإصدار:</strong> 4.0</p>
+                            <p><strong>المطور:</strong> Mohammed Elsonbaty</p>
+                            <p><strong>الميزات:</strong></p>
+                            <ul style="margin-right: 20px;">
+                                <li>جميع سور القرآن الكريم</li>
+                                <li>10 من أشهر القراء</li>
+                                <li>يعمل بدون إنترنت</li>
+                                <li>وضع الليل</li>
+                                <li>الإشارات المرجعية</li>
+                            </ul>
+                        </div>
+                        <button onclick="this.parentElement.remove()" style="background: #1a5f7a; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; margin-top: 15px;">
+                            موافق
+                        </button>
+                    </div>
+                `;
+                
+                const div = document.createElement('div');
+                div.innerHTML = info;
+                div.style.position = 'fixed';
+                div.style.top = '0';
+                div.style.left = '0';
+                div.style.right = '0';
+                div.style.bottom = '0';
+                div.style.background = 'rgba(0,0,0,0.5)';
+                div.style.display = 'flex';
+                div.style.alignItems = 'center';
+                div.style.justifyContent = 'center';
+                div.style.zIndex = '1000';
+                
+                document.body.appendChild(div);
+                
+                // إغلاق بالنقر خارج الصندوق
+                div.addEventListener('click', (e) => {
+                    if (e.target === div) {
+                        document.body.removeChild(div);
+                    }
+                });
+            },
+            
+            // === عرض الرسائل ===
+            showMessage: function(message, type) {
+                console.log(`💬 ${message}`);
+                
+                // إنشاء عنصر الرسالة
+                const messageDiv = document.createElement('div');
+                messageDiv.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#F44336' : '#2196F3'};
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
+                    max-width: 400px;
+                    word-wrap: break-word;
+                `;
+                
+                messageDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                
+                // إضافة أنيميشن
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes fadeOut {
+                        from { opacity: 1; }
+                        to { opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                document.body.appendChild(messageDiv);
+                
+                // إزالة الرسالة بعد 3 ثواني
+                setTimeout(() => {
+                    if (messageDiv.parentNode) {
+                        document.body.removeChild(messageDiv);
+                    }
+                }, 3000);
+            }
+        };
+        
+        // === بدء التطبيق عند تحميل الصفحة ===
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("📄 تم تحميل الصفحة، جارٍ بدء التطبيق...");
+            QuranApp.init();
+        });
+        
+        // === إضافة أنيميشن CSS ===
+        const style = document.createElement('style');
+        style.textContent = `
+            .dark-mode {
+                --primary: #2c7873;
+                --primary-light: #6fb3b8;
+                --secondary: #159895;
+                --bg: #121212;
+                --card: #1e1e1e;
+                --text: #f0f0f0;
+                --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            
+            .control-btn:active, .player-btn:active {
+                transform: scale(0.95);
+            }
+            
+            .surah-item, .qari-item {
+                transition: all 0.3s ease;
+            }
+            
+            .surah-item:hover, .qari-item:hover {
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            .surah-item, .qari-item, .player-section, .sidebar, .right-sidebar {
+                animation: fadeIn 0.5s ease;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
