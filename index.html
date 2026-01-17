@@ -3,201 +3,702 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشغل القرآن الكريم الكامل - بدون إنترنت</title>
+    <title>القرآن الكريم - مشغل كامل مع مكتبة شاملة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icons/icon-192.png">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="header-top">
-                <div class="logo">
-                    <i class="fas fa-quran"></i>
-                    <h1>مشغل القرآن الكريم الكامل</h1>
-                </div>
-                <div class="header-controls">
-                    <button class="control-btn" id="night-mode-btn" title="وضع الليل">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <button class="control-btn" id="bookmarks-btn" title="الإشارات المرجعية">
-                        <i class="fas fa-bookmark"></i>
-                    </button>
-                    <button class="control-btn" id="font-size-btn" title="حجم الخط">
-                        <i class="fas fa-text-height"></i>
-                    </button>
-                    <button class="control-btn" id="info-btn" title="عن التطبيق">
-                        <i class="fas fa-info-circle"></i>
-                    </button>
-                </div>
-            </div>
-            <p class="subtitle">تطبيق يعمل بدون إنترنت مع جميع السور والآيات وأصوات 10 من أشهر الشيوخ</p>
-            <div class="offline-badge">
-                <i class="fas fa-wifi-slash"></i> يعمل بدون إنترنت - جميع البيانات مخزنة محلياً
-            </div>
-        </header>
-        
-        <div class="main-content">
-            <!-- الشريط الجانبي الأيسر - السور -->
-            <div class="sidebar">
-                <div class="section-title">
-                    <h2><i class="fas fa-book-open"></i> سور القرآن الكريم</h2>
-                    <span id="surah-count">114</span>
-                </div>
-                <div class="search-box">
-                    <input type="text" class="search-input" id="surah-search" placeholder="ابحث عن سورة...">
-                </div>
-                <div class="list-container">
-                    <ul class="surah-list" id="surah-list">
-                        <!-- سيتم ملؤه بالجافاسكريبت -->
-                    </ul>
-                </div>
+    <!-- شريط التنقل العلوي -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-quran"></i>
+                <h1>القرآن الكريم</h1>
+                <span class="app-version">v4.0</span>
             </div>
             
-            <!-- قسم المشغل الرئيسي -->
-            <div class="player-section">
+            <div class="nav-menu" id="nav-menu">
+                <a href="#" class="nav-link active" data-section="home">
+                    <i class="fas fa-home"></i>
+                    <span>الرئيسية</span>
+                </a>
+                <a href="#" class="nav-link" data-section="library">
+                    <i class="fas fa-book"></i>
+                    <span>مكتبة القرآن</span>
+                </a>
+                <a href="#" class="nav-link" data-section="reciters">
+                    <i class="fas fa-users"></i>
+                    <span>القراء</span>
+                </a>
+                <a href="#" class="nav-link" data-section="bookmarks">
+                    <i class="fas fa-bookmark"></i>
+                    <span>الإشارات</span>
+                </a>
+                <a href="#" class="nav-link" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>الإعدادات</span>
+                </a>
+            </div>
+            
+            <div class="nav-controls">
+                <button class="nav-control-btn" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="nav-control-btn" id="fullscreen-toggle">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="nav-control-btn mobile-menu-btn" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- قسم الرئيسية -->
+        <section class="content-section active" id="home-section">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h2 class="hero-title">مشغل القرآن الكريم الكامل</h2>
+                    <p class="hero-subtitle">استمع، اقرأ، وتدبر مع مكتبة القرآن الشاملة</p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-book-open"></i>
+                            <div class="stat-content">
+                                <span class="stat-number">114</span>
+                                <span class="stat-label">سورة</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-microphone-alt"></i>
+                            <div class="stat-content">
+                                <span class="stat-number">10</span>
+                                <span class="stat-label">قارئ</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-ayat"></i>
+                            <div class="stat-content">
+                                <span class="stat-number">6236</span>
+                                <span class="stat-label">آية</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-wifi-slash"></i>
+                            <div class="stat-content">
+                                <span class="stat-number">100%</span>
+                                <span class="stat-label">بدون إنترنت</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="quran-illustration">
+                        <i class="fas fa-quran"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مشغل القرآن الرئيسي -->
+            <div class="main-player">
                 <div class="player-header">
-                    <h2 class="now-playing">
-                        <i class="fas fa-play-circle"></i>
-                        <span id="now-playing-text">اختر سورة للبدء</span>
-                    </h2>
-                    <div class="surah-info" id="surah-info">
-                        <span id="current-surah-name">-</span> - 
-                        <span id="current-surah-ayahs">0</span> آية - 
-                        <span id="current-surah-type">-</span>
+                    <h3><i class="fas fa-play-circle"></i> المشغل الرئيسي</h3>
+                    <div class="player-status" id="player-status">
+                        <span class="status-indicator"></span>
+                        <span>متوقف</span>
                     </div>
                 </div>
                 
-                <div class="player-controls">
-                    <div class="progress-section">
-                        <div class="time-display" id="current-time">0:00</div>
-                        <div class="progress-bar" id="progress-bar">
-                            <div class="progress" id="progress"></div>
+                <div class="player-info">
+                    <div class="current-surah-info">
+                        <div class="surah-name" id="current-surah-display">سورة الفاتحة</div>
+                        <div class="surah-meta">
+                            <span class="meta-item" id="current-ayah-display">الآية 1 من 7</span>
+                            <span class="meta-separator">•</span>
+                            <span class="meta-item" id="current-reciter-display">مشاري العفاسي</span>
                         </div>
-                        <div class="time-display" id="duration">0:00</div>
                     </div>
                     
-                    <div class="buttons-container">
-                        <button class="player-btn" id="prev-ayah" title="الآية السابقة">
-                            <i class="fas fa-step-backward"></i>
-                        </button>
-                        <button class="player-btn" id="rewind" title="تراجع 10 ثواني">
-                            <i class="fas fa-backward"></i>
-                        </button>
-                        <button class="player-btn play-pause" id="play-pause" title="تشغيل / إيقاف">
-                            <i class="fas fa-play"></i>
-                        </button>
-                        <button class="player-btn" id="forward" title="تقدم 10 ثواني">
-                            <i class="fas fa-forward"></i>
-                        </button>
-                        <button class="player-btn" id="next-ayah" title="الآية التالية">
-                            <i class="fas fa-step-forward"></i>
-                        </button>
-                        <button class="player-btn" id="repeat-btn" title="تكرار الآية">
+                    <div class="progress-section">
+                        <div class="time-display">
+                            <span id="current-time">0:00</span>
+                            <span class="time-separator">/</span>
+                            <span id="duration">0:00</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progress-bar">
+                                <div class="progress" id="progress"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="player-controls">
+                        <button class="player-btn" id="repeat-btn" title="تكرار">
                             <i class="fas fa-redo"></i>
                         </button>
+                        <button class="player-btn" id="prev-ayah-btn" title="آية سابقة">
+                            <i class="fas fa-step-backward"></i>
+                        </button>
+                        <button class="player-btn play-pause-btn" id="play-pause-btn">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="player-btn" id="next-ayah-btn" title="آية تالية">
+                            <i class="fas fa-step-forward"></i>
+                        </button>
+                        <button class="player-btn" id="bookmark-btn" title="إشارة مرجعية">
+                            <i class="far fa-bookmark"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="extra-controls">
+                        <button class="extra-btn" id="prev-surah-btn">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>سورة سابقة</span>
+                        </button>
+                        <button class="extra-btn" id="surah-list-btn">
+                            <i class="fas fa-list"></i>
+                            <span>قائمة السور</span>
+                        </button>
+                        <button class="extra-btn" id="next-surah-btn">
+                            <span>سورة تالية</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
                     </div>
                 </div>
                 
-                <div class="ayah-display-container">
+                <div class="ayah-display">
                     <div class="ayah-text" id="ayah-text">
-                        اختر سورة وقارئاً للبدء في الاستماع إلى القرآن الكريم
+                        بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                     </div>
                     <div class="ayah-translation" id="ayah-translation">
-                        Choose a surah and a reciter to start listening to the Holy Quran
+                        بسم الله الرحمن الرحيم
                     </div>
-                    <div class="ayah-info">
-                        <div class="ayah-number" id="ayah-number">0</div>
-                        <div class="ayah-actions">
-                            <button class="ayah-action-btn" id="bookmark-ayah-btn" title="إضافة إشارة مرجعية">
-                                <i class="far fa-bookmark"></i> حفظ
+                    <div class="ayah-actions">
+                        <button class="ayah-action-btn" id="copy-ayah-btn">
+                            <i class="far fa-copy"></i>
+                            نسخ
+                        </button>
+                        <button class="ayah-action-btn" id="share-ayah-btn">
+                            <i class="fas fa-share-alt"></i>
+                            مشاركة
+                        </button>
+                        <button class="ayah-action-btn" id="tafseer-toggle-btn">
+                            <i class="fas fa-book-open"></i>
+                            تفسير
+                        </button>
+                    </div>
+                    
+                    <div class="tafseer-container" id="tafseer-container">
+                        <div class="tafseer-header">
+                            <h4><i class="fas fa-info-circle"></i> التفسير الميسر</h4>
+                            <button class="close-tafseer" id="close-tafseer-btn">
+                                <i class="fas fa-times"></i>
                             </button>
-                            <button class="ayah-action-btn" id="share-ayah-btn" title="مشاركة الآية">
-                                <i class="fas fa-share-alt"></i> مشاركة
-                            </button>
-                            <button class="ayah-action-btn" id="copy-ayah-btn" title="نسخ الآية">
-                                <i class="far fa-copy"></i> نسخ
-                            </button>
+                        </div>
+                        <div class="tafseer-content" id="tafseer-content">
+                            أبدأ قراءتي متبركًا باسم الله وحده لا شريك له، مستعينًا به في جميع أموري، وهو الرحمن الرحيم الذي وسعت رحمته كل شيء.
                         </div>
                     </div>
                 </div>
-                
-                <!-- تبويبات عرض الآيات والتفسير -->
-                <div class="tabs">
-                    <div class="tab active" data-tab="ayahs-tab">آيات السورة</div>
-                    <div class="tab" data-tab="tafseer-tab">التفسير الميسر</div>
-                    <div class="tab" data-tab="reciters-tab">القراء</div>
-                </div>
-                
-                <div class="tab-content active" id="ayahs-tab">
-                    <div class="ayahs-container" id="ayahs-container">
-                        <div class="loading" id="ayahs-loading">
-                            <i class="fas fa-spinner fa-spin"></i> جاري تحميل آيات السورة...
+            </div>
+
+            <!-- سريع الوصول -->
+            <div class="quick-access">
+                <h3><i class="fas fa-bolt"></i> سريع الوصول</h3>
+                <div class="quick-access-grid">
+                    <a href="#" class="quick-access-item" data-section="library">
+                        <div class="quick-access-icon">
+                            <i class="fas fa-book-reader"></i>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="tab-content" id="tafseer-tab">
-                    <div class="ayahs-container" id="tafseer-container">
-                        <div class="loading">
-                            <i class="fas fa-spinner fa-spin"></i> جاري تحميل التفسير...
+                        <div class="quick-access-content">
+                            <h4>القراءة المتتابعة</h4>
+                            <p>استكمل قراءتك من حيث توقفت</p>
                         </div>
-                    </div>
+                        <div class="quick-access-arrow">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="quick-access-item" data-section="library" data-filter="favorites">
+                        <div class="quick-access-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="quick-access-content">
+                            <h4>السور المفضلة</h4>
+                            <p>الوصول السريع للسور المفضلة لديك</p>
+                        </div>
+                        <div class="quick-access-arrow">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="quick-access-item" data-section="bookmarks">
+                        <div class="quick-access-icon">
+                            <i class="fas fa-bookmark"></i>
+                        </div>
+                        <div class="quick-access-content">
+                            <h4>الإشارات المرجعية</h4>
+                            <p>آياتك المحفوظة</p>
+                        </div>
+                        <div class="quick-access-arrow">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="quick-access-item" data-section="reciters">
+                        <div class="quick-access-icon">
+                            <i class="fas fa-headphones-alt"></i>
+                        </div>
+                        <div class="quick-access-content">
+                            <h4>جميع القراء</h4>
+                            <p>استمع لأصوات مختلفة</p>
+                        </div>
+                        <div class="quick-access-arrow">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- آخر التلاوات -->
+            <div class="recent-recitations">
+                <div class="section-header">
+                    <h3><i class="fas fa-history"></i> آخر التلاوات</h3>
+                    <button class="clear-recent" id="clear-recent-btn">مسح الكل</button>
+                </div>
+                <div class="recent-list" id="recent-list">
+                    <!-- سيتم ملؤه ديناميكياً -->
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم مكتبة القرآن -->
+        <section class="content-section" id="library-section">
+            <div class="library-header">
+                <h2><i class="fas fa-book"></i> مكتبة القرآن الكريم</h2>
+                <p class="library-subtitle">تصفح واقرأ جميع سور القرآن الكريم</p>
+            </div>
+            
+            <div class="library-controls">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="library-search" placeholder="ابحث عن سورة أو آية...">
+                    <button class="clear-search" id="clear-search-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
                 
-                <div class="tab-content" id="reciters-tab">
-                    <div class="list-container">
-                        <ul class="reciters-list" id="reciters-list">
-                            <!-- سيتم ملؤه بالجافاسكريبت -->
-                        </ul>
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label for="surah-filter"><i class="fas fa-filter"></i> ترتيب حسب:</label>
+                        <select id="surah-filter" class="filter-select">
+                            <option value="order">الترتيب في المصحف</option>
+                            <option value="name">اسم السورة</option>
+                            <option value="length">عدد الآيات</option>
+                            <option value="type">النوع (مكية/مدنية)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button class="view-btn" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
                     </div>
                 </div>
             </div>
             
-            <!-- الشريط الجانبي الأيمن - الإشارات المرجعية والقراء -->
-            <div class="right-sidebar">
-                <div class="section-title">
-                    <h2><i class="fas fa-bookmark"></i> الإشارات المرجعية</h2>
-                    <span id="bookmarks-count">0</span>
-                </div>
-                <div class="list-container">
-                    <ul class="bookmarks-list" id="bookmarks-list">
-                        <li class="bookmark-item empty-bookmarks">
-                            <div>لا توجد إشارات مرجعية</div>
-                        </li>
-                    </ul>
+            <div class="surah-stats">
+                <div class="stat-card">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="stat-card-content">
+                        <h4>عدد السور</h4>
+                        <p class="stat-card-number">114</p>
+                    </div>
                 </div>
                 
-                <div class="section-title" style="margin-top: 20px;">
-                    <h2><i class="fas fa-users"></i> القراء</h2>
-                    <span id="reciters-count">10</span>
+                <div class="stat-card">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-ayat"></i>
+                    </div>
+                    <div class="stat-card-content">
+                        <h4>عدد الآيات</h4>
+                        <p class="stat-card-number">6,236</p>
+                    </div>
                 </div>
-                <div class="list-container">
-                    <ul class="reciters-list" id="reciters-sidebar-list">
-                        <!-- سيتم ملؤه بالجافاسكريبت -->
-                    </ul>
+                
+                <div class="stat-card">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-card-content">
+                        <h4>وقت القراءة</h4>
+                        <p class="stat-card-number">~15 ساعة</p>
+                    </div>
                 </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-card-content">
+                        <h4>السور المفضلة</h4>
+                        <p class="stat-card-number" id="favorite-count">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="surah-library" id="surah-library">
+                <!-- سيتم ملؤه ديناميكياً -->
+            </div>
+            
+            <!-- وضع القراءة -->
+            <div class="reading-mode" id="reading-mode">
+                <div class="reading-header">
+                    <div class="reading-title">
+                        <h3 id="reading-surah-name">سورة الفاتحة</h3>
+                        <div class="reading-meta">
+                            <span id="reading-surah-info">7 آيات • مكية</span>
+                        </div>
+                    </div>
+                    <div class="reading-controls">
+                        <button class="reading-btn" id="reading-settings-btn">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <button class="reading-btn" id="exit-reading-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="reading-content" id="reading-content">
+                    <!-- سيتم ملؤه ديناميكياً -->
+                </div>
+                
+                <div class="reading-navigation">
+                    <button class="nav-btn" id="prev-page-btn">
+                        <i class="fas fa-chevron-right"></i>
+                        <span>الصفحة السابقة</span>
+                    </button>
+                    <div class="page-info">
+                        <span id="current-page">1</span>
+                        /
+                        <span id="total-pages">1</span>
+                    </div>
+                    <button class="nav-btn" id="next-page-btn">
+                        <span>الصفحة التالية</span>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم القراء -->
+        <section class="content-section" id="reciters-section">
+            <div class="reciters-header">
+                <h2><i class="fas fa-users"></i> القراء</h2>
+                <p class="reciters-subtitle">استمع لأصوات أشهر قراء القرآن الكريم</p>
+            </div>
+            
+            <div class="reciters-grid" id="reciters-grid">
+                <!-- سيتم ملؤه ديناميكياً -->
+            </div>
+            
+            <div class="reciter-detail" id="reciter-detail">
+                <!-- سيتم ملؤه ديناميكياً -->
+            </div>
+        </section>
+
+        <!-- قسم الإشارات المرجعية -->
+        <section class="content-section" id="bookmarks-section">
+            <div class="bookmarks-header">
+                <h2><i class="fas fa-bookmark"></i> الإشارات المرجعية</h2>
+                <p class="bookmarks-subtitle">آياتك المحفوظة والملاحظات الشخصية</p>
+            </div>
+            
+            <div class="bookmarks-container" id="bookmarks-container">
+                <!-- سيتم ملؤه ديناميكياً -->
+            </div>
+            
+            <div class="empty-bookmarks" id="empty-bookmarks">
+                <div class="empty-state">
+                    <i class="fas fa-bookmark"></i>
+                    <h3>لا توجد إشارات مرجعية</h3>
+                    <p>قم بإضافة إشارات مرجعية للآيات التي تريد الرجوع إليها لاحقاً</p>
+                    <button class="btn-primary" id="explore-surahs-btn">استكشاف السور</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم الإعدادات -->
+        <section class="content-section" id="settings-section">
+            <div class="settings-header">
+                <h2><i class="fas fa-cog"></i> الإعدادات</h2>
+                <p class="settings-subtitle">خصص تجربتك مع القرآن الكريم</p>
+            </div>
+            
+            <div class="settings-container">
+                <div class="settings-category">
+                    <h3><i class="fas fa-palette"></i> المظهر</h3>
+                    <div class="settings-options">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>وضع الليل</h4>
+                                <p>تفعيل الوضع المظلم لحماية العينين</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="dark-mode-toggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>حجم الخط</h4>
+                                <p>تغيير حجم خط عرض الآيات</p>
+                            </div>
+                            <div class="font-size-controls">
+                                <button class="font-size-btn" data-size="small">أ</button>
+                                <button class="font-size-btn active" data-size="medium">أ</button>
+                                <button class="font-size-btn" data-size="large">أ</button>
+                                <button class="font-size-btn" data-size="x-large">أ</button>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>لون التمييز</h4>
+                                <p>اختر لون تمييز الآيات</p>
+                            </div>
+                            <div class="color-picker">
+                                <button class="color-option" data-color="#2E7D32" style="background-color: #2E7D32;"></button>
+                                <button class="color-option active" data-color="#1565C0" style="background-color: #1565C0;"></button>
+                                <button class="color-option" data-color="#6A1B9A" style="background-color: #6A1B9A;"></button>
+                                <button class="color-option" data-color="#C62828" style="background-color: #C62828;"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-category">
+                    <h3><i class="fas fa-volume-up"></i> الصوت</h3>
+                    <div class="settings-options">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>مستوى الصوت</h4>
+                                <p>تحكم في مستوى صوت التلاوة</p>
+                            </div>
+                            <input type="range" id="volume-slider" min="0" max="100" value="80">
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>التكرار التلقائي</h4>
+                                <p>تكرار الآية الحالية تلقائياً</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="auto-repeat-toggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>متابعة تلقائية</h4>
+                                <p>الانتقال التلقائي للآية التالية</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="auto-continue-toggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-category">
+                    <h3><i class="fas fa-database"></i> البيانات</h3>
+                    <div class="settings-options">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>مسح ذاكرة التخزين المؤقت</h4>
+                                <p>تحرير مساحة التخزين المحلي</p>
+                            </div>
+                            <button class="btn-secondary" id="clear-cache-btn">مسح</button>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>نسخ احتياطي للإشارات</h4>
+                                <p>حفظ نسخة من إشاراتك المرجعية</p>
+                            </div>
+                            <button class="btn-secondary" id="backup-bookmarks-btn">نسخ</button>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>استعادة الإعدادات الافتراضية</h4>
+                                <p>إعادة جميع الإعدادات إلى حالتها الأصلية</p>
+                            </div>
+                            <button class="btn-secondary" id="reset-settings-btn">إعادة ضبط</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-category">
+                    <h3><i class="fas fa-info-circle"></i> حول التطبيق</h3>
+                    <div class="about-app">
+                        <div class="app-logo">
+                            <i class="fas fa-quran"></i>
+                        </div>
+                        <div class="app-info">
+                            <h3>مشغل القرآن الكريم</h3>
+                            <p class="app-version">الإصدار 4.0</p>
+                            <p class="app-description">
+                                تطبيق كامل للقرآن الكريم يعمل بدون إنترنت مع مكتبة شاملة للقراءة والاستماع
+                            </p>
+                            <div class="developer-info">
+                                <i class="fas fa-user"></i>
+                                <span>المطور: <strong>Mohammed Elsonbaty</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="app-features">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>جميع سور القرآن الكريم</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>10 من أشهر القراء</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>عمل كامل بدون إنترنت</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>مكتبة قراءة شاملة</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>إشارات مرجعية وملاحظات</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- شريط التذييل -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4><i class="fas fa-quran"></i> القرآن الكريم</h4>
+                <p>تطبيق شامل للقرآن الكريم مع مكتبة قراءة كاملة ومشغل صوتي متكامل</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>روابط سريعة</h4>
+                <ul class="footer-links">
+                    <li><a href="#" data-section="home"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="#" data-section="library"><i class="fas fa-book"></i> مكتبة القرآن</a></li>
+                    <li><a href="#" data-section="reciters"><i class="fas fa-users"></i> القراء</a></li>
+                    <li><a href="#" data-section="bookmarks"><i class="fas fa-bookmark"></i> الإشارات</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>معلومات التطبيق</h4>
+                <ul class="footer-links">
+                    <li><i class="fas fa-code"></i> الإصدار: 4.0</li>
+                    <li><i class="fas fa-database"></i> البيانات: 6236 آية</li>
+                    <li><i class="fas fa-wifi-slash"></i> حالة: يعمل بدون نت</li>
+                    <li><i class="fas fa-user"></i> المطور: Mohammed Elsonbaty</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <p>لاقتراحاتك أو للإبلاغ عن مشكلة</p>
+                <a href="mailto:contact@example.com" class="contact-link">
+                    <i class="fas fa-envelope"></i> contact@example.com
+                </a>
             </div>
         </div>
         
-        <footer>
-            <p>مشغل القرآن الكريم الكامل - تطبيق يعمل بدون إنترنت &copy; <span id="current-year"></span></p>
-            <p>تم التطوير للاستماع إلى القرآن الكريم بأصوات أشهر القراء مع عرض النص الكامل والتفسير الميسر</p>
-        </footer>
-    </div>
-    
-    <!-- تنبيهات -->
-    <div class="alert" id="alert">
-        <span id="alert-message">تمت العملية بنجاح</span>
-        <button class="close-alert" id="close-alert">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    
-    <!-- مكتبة الأصوات -->
+        <div class="footer-bottom">
+            <p>&copy; 2023 مشغل القرآن الكريم. جميع الحقوق محفوظة.</p>
+            <p>تم التطوير بواسطة <strong>Mohammed Elsonbaty</strong></p>
+        </div>
+    </footer>
+
+    <!-- العناصر المساعدة -->
     <audio id="audio-player" preload="auto"></audio>
     
+    <!-- نافذة التأكيد -->
+    <div class="modal" id="confirmation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">تأكيد العملية</h3>
+                <button class="modal-close" id="modal-close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">هل أنت متأكد من رغبتك في متابعة هذه العملية؟</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="modal-cancel-btn">إلغاء</button>
+                <button class="btn-primary" id="modal-confirm-btn">تأكيد</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- إشعارات -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <i class="fas fa-check-circle notification-icon success"></i>
+            <div class="notification-text">
+                <h4 id="notification-title">تمت العملية بنجاح</h4>
+                <p id="notification-message">تم حفظ التغييرات بنجاح</p>
+            </div>
+            <button class="notification-close" id="notification-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- شاشة التحميل -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <i class="fas fa-quran"></i>
+            </div>
+            <h3>جاري التحميل</h3>
+            <p id="loading-message">جاري تحميل بيانات القرآن الكريم...</p>
+            <div class="loading-progress">
+                <div class="progress-bar">
+                    <div class="progress" id="loading-progress"></div>
+                </div>
+                <span id="loading-percentage">0%</span>
+            </div>
+        </div>
+    </div>
+
     <script src="quran-data.js"></script>
     <script src="script.js"></script>
 </body>
